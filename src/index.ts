@@ -25,7 +25,6 @@ app.post("/encode", async (req, res) => {
     sort: "-created",
   });
   const record = records.find((record) => record.original === req.body.url);
-  console.log(records);
   if (record) {
     //if the record exists than just return the saved shortened url from the data
     res.json({ shortened: record?.shortened });
