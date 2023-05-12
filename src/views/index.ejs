@@ -4,28 +4,79 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
+    <title>URL Shortener</title>
   </head>
   <style>
-    body {
-      height: 100vh;
-    }
     main {
-      margin: auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+    input {
+      padding: 0.5rem 1rem;
+    }
+    .response-area {
+      background-color: gray;
+      border-radius: 1rem;
+      padding: 0 2rem;
     }
   </style>
   <body>
     <main>
       <h1>URL Shortener</h1>
-      <form action="" method="POST">
-        <input
-          type="text"
-          name="url"
-          id="url"
-          placeholder="paste a url to shorten"
-        />
-        <input type="submit" value="shorten" />
-      </form>
+      <input
+        type="url"
+        name="userUrl"
+        id="userUrl"
+        placeholder="paste a url to shorten"
+        required
+      />
+      <div class="buttons">
+        <button id="encodeBtn" onclick="encodeData()">Encode</button>
+        <button id="decodeBtn" onclick="decodeData()">Decode</button>
+      </div>
+      <div class="response-area">
+        <p id="responseUrl">Your generated link will appear here</p>
+      </div>
     </main>
+    <script>
+      const userInput = document.getElementById("userUrl");
+      const encodeBtn = document.getElementById("encodeBtn");
+      const decodeBtn = document.getElementById("decodeBtn");
+      const responseUrl = document.getElementById("responseUrl");
+      async function encodeData() {
+        try {
+          const response = await fetch("/encode", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url: userInput.value }),
+          });
+          const data = await response.json();
+          responseUrl.textContent = data.shortened;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      async function decodeData() {
+        try {
+          const response = await fetch("/decode", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url: userInput.value }),
+          });
+          const data = await response.json();
+          responseUrl.textContent = data.response;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    </script>
   </body>
 </html>
