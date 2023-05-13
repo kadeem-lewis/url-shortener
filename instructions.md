@@ -1,4 +1,6 @@
-#Instructions
+# Instructions
+
+## These instructions are strictly for windows devices since executables wont launch on a mac
 
 This URL Shortener is a Nodejs application that uses pocketbase as a database and express js as a backend framework
 
